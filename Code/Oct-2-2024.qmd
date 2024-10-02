@@ -1,0 +1,13 @@
+---
+title: "In_Class_Oct2"
+format: html
+editor: visual
+---
+
+## Set up
+
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(here)
+```
