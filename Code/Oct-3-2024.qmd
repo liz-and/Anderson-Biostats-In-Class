@@ -1,0 +1,118 @@
+---
+title: "Oct 3 2024 Class"
+format: html
+editor: visual
+---
+
+## Set up
+
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(here)
+```
+
+Now read in data:
+
+```{r}
+drugs <- read.csv(here("Data", "drug_resistance.csv"))
+```
+
+```{r}
+str(drugs)
+glimpse(drugs)
+```
+
+turn treatment variable into a factor
+
+```{r}
+drugs$Treatment <- as.factor(drugs$Treatment)
+
+levels(drugs$Treatment)
+```
+
+There are 9 levels b/c no data validation used - should be 3 levels.
+
+Now fix the treatment variable
+
+Find the rows that have any version of "control"
+
+Use 'which()' function to do so.
+
+```{r}
+fix <- which(drugs$Treatment %in% c("cantrol", "control", "Control")) 
+#look in drugs treatment column and return row numbers where value in column is included in this list of options (and call that list fix)
+#identified the rows that need repair
+```
+
+Now fix
+
+```{r}
+drugs$Treatment[fix] <- "control"
+
+levels(drugs$Treatment) #gives the same thing so must ask it to relist the levels...
+
+drugs$Treatment <-factor(drugs$Treatment) #this just tells R to re-list the levels of my factor now that they have changed
+
+levels(drugs$Treatment) #now shows just one version of control variable
+```
+
+Now fix the rest of the column Treatment to have only 3 levels
+
+Fix drug 2
+
+```{r}
+fix2 <- which(drugs$Treatment %in% c("drug x 2", "Drugx2", "drug2"))
+
+drugs$Treatment[fix2] <- "drug x 2"
+
+drugs$Treatment <-factor(drugs$Treatment)
+levels(drugs$Treatment)
+```
+
+Now fix drug 3
+
+```{r}
+fix3 <- which(drugs$Treatment %in% c("drug x 3", "Drug x 3", "drug3"))
+
+drugs$Treatment[fix3] <- "drug x 3"
+
+drugs$Treatment <-factor(drugs$Treatment)
+levels(drugs$Treatment)
+```
+
+## Now fix tech.name column
+
+First make a factor and look at levels
+
+```{r}
+drugs$tech.name <- as.factor(drugs$tech.name)
+
+levels(drugs$tech.name)
+```
+
+Now fix to have right number of levels (4)
+
+```{r}
+FixBecca <- which(drugs$tech.name %in% c("becca", "Becca"))
+
+drugs$tech.name[FixBecca] <- "Becca"
+
+drugs$tech.name <-factor(drugs$tech.name)
+levels(drugs$tech.name)
+```
+
+```{r}
+FixBrian <- which(drugs$tech.name %in% c("brain", "brian", "Brian"))
+
+drugs$tech.name[FixBrian] <- "Brian"
+
+drugs$tech.name <-factor(drugs$tech.name)
+levels(drugs$tech.name)
+```
+
+```{r}
+FixJose <- which(drugs$tech.name %in% c("jose"))
+
+drugs$tech.name[FixJose] <- "Jose"
+```
