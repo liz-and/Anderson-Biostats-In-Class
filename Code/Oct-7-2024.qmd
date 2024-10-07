@@ -44,3 +44,23 @@ levels(tomatoes$Treatment) #still shows all original levels so now need to say..
 
 tomatoes$Treatment <- factor(tomatoes$Treatment) #then read the above line of code again to get the updated levels
 ```
+
+## Now look at summary function
+
+```{r}
+test <- c(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)
+summary(test)
+```
+
+Looking at summary some more
+
+```{r}
+grades <- c(90, 94, 96, 90, 84, 86)
+summary(grades)
+```
+
+Now a different way
+
+```{r}
+quantile(grades, probs = c(0, 0.25, 0.5, 0.75, 1))
+```
