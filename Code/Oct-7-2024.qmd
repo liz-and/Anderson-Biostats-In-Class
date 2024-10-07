@@ -1,0 +1,46 @@
+---
+title: "Oct 7 2024 Class"
+format: html
+editor: visual
+---
+
+```{r}
+#Set up
+rm(list=ls())
+library(here)
+library(tidyverse)
+```
+
+```{r}
+tomatoes <- read.csv(here("Data", "tomato_data.csv")) #read in the data
+```
+
+```{r}
+glimpse(tomatoes) #look at the dataset
+```
+
+Assign data types –\> Change the columns to factor data type (nominal)
+
+```{r}
+tomatoes$Plant_number <- as.factor(tomatoes$Plant_number)
+
+tomatoes$Treatment <- as.factor(tomatoes$Treatment)
+```
+
+```{r}
+levels(tomatoes$Treatment) #notice no data validation, need to fix factor levels
+```
+
+```{r}
+fix <- which(tomatoes$Treatment == "control")
+tomatoes$Treatment[fix] <- "Control"
+```
+
+```{r}
+fix2 <- which(tomatoes$Treatment == "fertilizer")
+tomatoes$Treatment[fix2] <- "Fertilizer"
+
+levels(tomatoes$Treatment) #still shows all original levels so now need to say...
+
+tomatoes$Treatment <- factor(tomatoes$Treatment) #then read the above line of code again to get the updated levels
+```
