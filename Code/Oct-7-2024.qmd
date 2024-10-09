@@ -64,3 +64,67 @@ Now a different way
 ```{r}
 quantile(grades, probs = c(0, 0.25, 0.5, 0.75, 1))
 ```
+
+# Exercise 4 (done outside of class)
+
+Practicing with dplyr
+
+Line of code to get just the column with number of flowers
+
+```{r}
+select(tomatoes, Num_flowers) 
+```
+
+Return the 3rd through 8th rows of data
+
+```{r}
+slice(tomatoes, 3:8)
+```
+
+Return only the data from the control treatment in the experiment
+
+```{r}
+filter(tomatoes, Treatment == "Control") 
+
+#Use logical operator!
+```
+
+Return plants from the fertilized treatment that had at least 27 flowers
+
+```{r}
+tomatoes %>% #in the tomatoes data frame
+  filter(Num_flowers > 27) %>% #filter to only show rows with over 27 flowers
+  filter(Treatment == "Fertilizer") #filter to only those in the Fertilizer treatment
+```
+
+Determine the mean number of flowers in the control treatment plants
+
+```{r}
+tomatoes %>%
+  filter(Treatment == "Control") %>%
+  mean(Num_flowers)
+## ^^^ Wrong, Does not work ^^^
+
+
+# Use group_by
+tomatoes %>%
+  group_by(Treatment) %>%
+  summarise(meanNumFlowers = mean(Num_flowers))
+# not sure how to get it to just be Control treatment
+```
+
+Determine the mean weight of tomatoes from the fertilizer treatment plants
+
+```{r}
+tomatoes %>%
+  group_by(Treatment) %>%
+  summarise(meanWeight = mean(Avg_tomato_weight_g)) 
+#answer was 147
+
+tomatoes %>%
+  group_by(Treatment = "Fertilizer") %>%
+  summarise(meanWeight = mean(Avg_tomato_weight_g))
+#answer was 144.4, but got only the fertilizer column returned...
+
+#Why am I getting different answers?
+```

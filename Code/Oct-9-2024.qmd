@@ -1,0 +1,64 @@
+---
+title: "Oct 9 In Class"
+format: html
+editor: visual
+---
+
+```{r}
+#set up
+rm(list=ls())
+library(tidyverse)
+library(here)
+```
+
+```{r}
+#read in data
+tomatoes <- read.csv(here("Data", "tomato_data.csv"))
+```
+
+## Warm up
+
+Return 3, 7, 9 rows
+
+```{r}
+slice(tomatoes, c(3, 7, 9))
+
+#OR use piping... (better)
+tomatoes %>% slice(c(3,7,9)) %>% View()
+#Take tomatoes data frame %>% AND THEN slice the rows AND THEN view the results of this (but doesn't make a new object)
+
+#the more modern version of piping operator is |>
+```
+
+Find all plants from fertilizer treatment with weight \> or equal to 145g
+
+```{r}
+tomatoes %>%
+  filter(Treatment == "Fertilizer" & Avg_tomato_weight_g >= 145) %>% View()
+#Success
+
+```
+
+# Tips and Tricks
+
+## Save your changes (to a new file in an output folder) 
+
+Make the output folder - not embedded in another folder
+
+```{r}
+dir.create(here("Outputs"))
+```
+
+Now save the file
+
+```{r}
+write.csv(tomatoes,here("Outputs", "tomatoes_fixed.csv"), row.names = FALSE) #saving the current version as this name
+# The row.names = FALSE prevents R from adding a column of row numbers to the output file
+```
+
+```{r}
+toms2 <- read.csv(here("Outputs", "tomatoes_fixed.csv"))
+#Notice without having the row.names = FALSE this happens --> new one has 6 variables and has a new column called "X" 
+
+# NOTE This is being saved as a text file so no info about structure is saved (data types not saved as it was before)
+```
