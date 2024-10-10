@@ -41,7 +41,7 @@ tomatoes %>%
 
 # Tips and Tricks
 
-## Save your changes (to a new file in an output folder) 
+## Save your changes (to a new file in an output folder)
 
 Make the output folder - not embedded in another folder
 
@@ -61,4 +61,50 @@ toms2 <- read.csv(here("Outputs", "tomatoes_fixed.csv"))
 #Notice without having the row.names = FALSE this happens --> new one has 6 variables and has a new column called "X" 
 
 # NOTE This is being saved as a text file so no info about structure is saved (data types not saved as it was before)
+```
+
+# Using chp 3 info
+
+Using dplyr "verbs"
+
+The main commands to know well are filter(), group_by(), and summarise()
+
+```{r}
+rm(list=ls()) #get rid of tomato data in the environment
+library(tidyverse)
+library(here)
+```
+
+```{r}
+Lead <- read.csv(here("Data", "NoCoLead.csv")) #read in data
+```
+
+What if we want to know the average number of tests given in the data set
+
+```{r}
+my_lead <- lead |> 
+  summarize(mean_num_tests = sum(num_tests)) |> 
+  View()
+
+#take lead AND THEN summarize
+#AND THEN view
+```
+
+What is the mean number of tests per year?
+
+```{r}
+lead_summary <- lead |> 
+  group_by(Year) |> 
+  summarise(
+    mean_tests_per_year = mean(num_tests)
+  ) 
+```
+
+NOTE –\> Output table will always have a column for everything put into group_by() – think about what want output to look like when deciding what to put into group_by
+
+Whatever in summarise() also has column in output
+
+```{r}
+my_lead <- lead |> 
+  summarise(mean_num_tests = sum(num_tests))
 ```

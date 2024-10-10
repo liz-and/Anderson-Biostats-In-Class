@@ -1,5 +1,5 @@
 ---
-title: "Oct 7 2024 Class"
+title: "Oct 7 2024 Class and Exercise 4"
 format: html
 editor: visual
 ---
@@ -127,4 +127,50 @@ tomatoes %>%
 #answer was 144.4, but got only the fertilizer column returned...
 
 #Why am I getting different answers?
+```
+
+Use piping to:
+
+Create a new variable called with only one column of plant numbers from plants that produced fruit with a mean weight of 150g or more
+
+```{r}
+big_toms <- tomatoes |>
+  filter(Avg_tomato_weight_g >= 150) |>
+  select(Plant_number)
+
+#create object big_toms <- from tomatoes df AND THEN filter by average tomato weight the rows that are greater than or equal to 150 AND THEN select the row Plant number as the output
+```
+
+Determine mean number of flowers produced in the control and treatment groups (with group_by and summarize)
+
+```{r}
+tomatoes|>
+  group_by(Treatment) |>
+  summarise(meanNumFlowers = mean(Num_flowers))
+
+#From the tomato dataframe AND THEN group data based on categorical variable Treatment (Control and Fertilizer). AND THEN use summarize to 
+```
+
+Determine the mean and standard deviation in mean fruit size between control and fertilized plants and save the result in a dataframe called TomatoSizes (use group_by and summarise)
+
+```{r}
+TomatoSize <- tomatoes |>
+  group_by(Treatment) |>
+  summarise(meanFruitSize = mean(Avg_tomato_weight_g))
+
+
+TomatoSizeSD <- tomatoes |>
+  group_by(Treatment) |>
+  summarise(sdFruitSize = sd(Avg_tomato_weight_g))
+
+#Was able to do these separately but didn't work when together...(see below)
+```
+
+```{r}
+TomatoSize <- tomatoes |>
+  group_by(Treatment) |>
+  summarise(meanFruitSize = mean(Avg_tomato_weight_g)) |>
+  summarise(sdFruitSize = sd(Avg_tomato_weight_g))
+
+#This doesn't work, not sure why... returns error saying that the Avg_tomato_weight_g doesn't exist...
 ```
