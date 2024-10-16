@@ -9,24 +9,28 @@ editor: visual
 You are receiving a dataset from the New York State Department of Health that shows test results for specimens submitted to be tested for rabies.
 
 ## In Class Exercise 1
+
 ### Set things up and read in the data
 
 Add the code to set up the workspace
 
 ```{r}
-
+rm(list=ls())
+library(tidyverse)
+library(here)
 ```
 
 Now read in the data and name it as an object called `rabies`.
 
 ```{r}
-
+rabies <- read.csv(here("Data", "Rabies_Laboratory_Submissions.csv"))
 ```
 
 Reduce the dataset to just the first 7 columns
 
 ```{r}
-
+rabies <- rabies |> select(1:7) 
+#Think about what your data should look like when run this before running it
 ```
 
 ### Examine the data
@@ -34,34 +38,65 @@ Reduce the dataset to just the first 7 columns
 1.  Get a summary for each variable.
 
 ```{r}
-
+summary(rabies)
 ```
 
 2.  Repair column names
 
 ```{r}
+names(rabies) #Want to change the dots (which are default R change from space) to underscores
 
+names(rabies) <- c("Received_Year", "Received_Month", "Report_Date", "County_Name", "Animal_Classification", "Number_of_Samples", "Positive_Samples")
 ```
 
 3.  Adjust data types
 
 ```{r}
+rabies$County_Name <- as.factor(rabies$County_Name)
+rabies$Animal_Classification <- as.factor(rabies$Animal_Classification)
 
+rabies$Report_Date #check what format datas are in - they're in month, date, year
+rabies$Report_Date <- mdy(rabies$Report_Date) #Adjust data format
+
+#Check levels on factors
+levels(rabies$County_Name) #looks ok
+levels(rabies$Animal_Classification) #looks ok
 ```
 
 4.  Now plot some data
 
 ```{r}
+#First look at - how many instances of the variable - with a histogram
+ggplot(rabies, aes(x = Received_Year))+ #want a plot with year on x axis
+  geom_histogram()
 
+# can leave out the x = 
+# Bins = how many clumps the data are broken into
+
+# looking at the data in this way helps detect outliers and make sure data is ok
+
+
+#More histograms
+ggplot(rabies, aes(x = Animal_Classification))+ #This doesn't work for the histogram because it's discrete data, not continuous
+  geom_histogram()
+
+ggplot(rabies, aes(x = Animal_Classification))+ 
+  geom_histogram(stat = "count")
+
+# Why plot data and become familiar with: - think about relationships between variables to explore - be able to recognize unexpected results that might be due to error
 ```
+
 ## In Class Exercise 2
+
 ### Look at some relationships
-5. Create a percent positive column
+
+5.  Create a percent positive column
+
 ```{r}
 
 ```
 
-6. Using the rabies dataset, create a new object called "animal summary" in which you determine, by Year and Animal Classification, the total number of samples, total positive samples, and the mean percent positive samples.
+6.  Using the rabies dataset, create a new object called "animal summary" in which you determine, by Year and Animal Classification, the total number of samples, total positive samples, and the mean percent positive samples.
 
 ```{r}
 animal_summary <- rabies %>% group_by(Received_Year, Animal_Classification) %>% summarise(
@@ -73,14 +108,9 @@ animal_summary <- rabies %>% group_by(Received_Year, Animal_Classification) %>% 
 
 
 ```
-Next, make a boxplot of those data with the following features:
-- The x-axis should be the animal classificaton
-- The y-axis should be the mean percent positive samples
-- Your boxplot should include the individual points laid over the boxplots. Make the points gray.
-- Rename the x-axis label as "Animal type" and the y-axis label as "Mean percent positive samples"
 
+Next, make a boxplot of those data with the following features: - The x-axis should be the animal classificaton - The y-axis should be the mean percent positive samples - Your boxplot should include the individual points laid over the boxplots. Make the points gray. - Rename the x-axis label as "Animal type" and the y-axis label as "Mean percent positive samples"
 
 ```{r}
 
 ```
-
