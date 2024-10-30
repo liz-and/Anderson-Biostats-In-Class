@@ -18,7 +18,11 @@ Use the information you learned from reading chapter 5 and doing homework 21 to 
 2.  Calculate the mean and standard deviation for the data and examine the resulting output.
 3.  Discuss with your partner:
     -   Review in the book: What are the assumptions about the data appropriate for a t-test? When you examine the plots and summary data, do they appear to meet those assumptions?
+        -   *Data is normally distributed*
+        -   *Variances are equal*
+        -   *Sample sizes are small*
     -   Based on examination of the plots and summary data, do you expect that there is a statistically significant difference in mean body fat percentage between males and females in this sample?
+        -   *Yes, means are pretty different, and histogram doesn't overlap too much*
 4.  Conduct a t-test and then interpret the results. What do they tell you about the null vs. alternative hypotheses?
 
 ```{r}
