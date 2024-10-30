@@ -21,6 +21,7 @@ Use the information you learned from reading chapter 5 and doing homework 21 to 
         -   *Data is normally distributed*
         -   *Variances are equal*
         -   *Sample sizes are small*
+        -   *Yes, appears to meet these assumptions. St.devs are fairly similar, data is normally distributed, no major skew/outliers*
     -   Based on examination of the plots and summary data, do you expect that there is a statistically significant difference in mean body fat percentage between males and females in this sample?
         -   *Yes, means are pretty different, and histogram doesn't overlap too much*
 4.  Conduct a t-test and then interpret the results. What do they tell you about the null vs. alternative hypotheses?
@@ -50,11 +51,13 @@ ggplot(body.fat, aes(x = body_fat_percent))+
 ```{r}
 mean.body.fat <- body.fat |>
   group_by(gender) |>
-  summarise(mean.body.fat = mean(body_fat_percent), stdev.body.fat = sd(body_fat_percent))
+  summarise(mean.body.fat = mean(body_fat_percent, na.rm = T), stdev.body.fat = sd(body_fat_percent, na.rm =T))
 ```
 
 ```{r}
 t.test(body_fat_percent ~ gender, data = body.fat)
 ```
 
-*Our results show that there is a significant difference between the means in body fat percentage of the female and male groups, so we can reject the null hypothesis.*
+*Our results show that there is a significant difference (t= 2.8632, df = 20.957, p = 0.00932) between the means in body fat percentage of the female and male groups, so we can reject the null hypothesis.*
+
+*Men have significantly less body fat than women (t= 2.8632, df = 20.957, p = 0.00932).*
