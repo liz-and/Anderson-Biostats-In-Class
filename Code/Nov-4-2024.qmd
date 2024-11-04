@@ -1,0 +1,103 @@
+---
+title: "Nov 4 Class"
+format: html
+editor: visual
+---
+
+## ANOVA tree data
+
+```{r}
+rm(list=ls())
+library(here)
+library(tidyverse)
+library(ggfortify)
+```
+
+```{r}
+trees <- read.csv(here("Data", "Forest_Tree_DBH_F21.csv"))
+```
+
+```{r}
+glimpse(trees)
+trees$Forest <- as.factor(trees$Forest)
+```
+
+Part 1 - Is there a difference in the mean DBH between the forests?
+
+Part 2 - If there is a difference, for which forests does the difference exist?
+
+## Part 1
+
+Make a plot
+
+```{r}
+ggplot(trees, aes(x=Forest, y=DBH_cm))+
+  geom_boxplot()+
+  theme_bw()
+
+#geom_jitter -> erika used and makes points not on top of each other
+```
+
+Seems like the Degrasse has a higher mean than the others.
+
+```{r}
+model_trees <- lm(DBH_cm ~ Forest, data=trees)
+```
+
+```{r}
+autoplot(model_trees, smooth.colour = NA)
+```
+
+```{r}
+anova(model_trees)
+```
+
+Mean DBH is not the same in the forests (significant).
+
+```{r}
+summary(model_trees)
+```
+
+The Intercept group is Degrasse because it's the first alphabetically so shows diff b/w that and the others
+
+## Part 2
+
+Install and activate the multcomp package
+
+```{r}
+library(multcomp)
+```
+
+Conduct a Tukey's HSD (honestly significant differences) test
+
+-   Only run a Tukey's test if you get a significant p-value with the ANOVA on its own
+
+```{=html}
+<!-- -->
+```
+-   Compares all the forests with all the other forests
+
+-   Automatically only gives significance once it's adjusted the p values
+
+```{r}
+phc1 <- glht(model_trees, linfct = mcp(Forest = "Tukey"))
+summary(phc1)
+
+
+#glht(the model, linear factor = multiple comparison(give factor variable = "Tukey"))
+#mcp means multiple comparisons
+
+#use summary(__) to get results
+```
+
+This doesn't compare against an intercept
+
+== 0 is the null (no difference)
+
+Can act for a 'compact letter display' of the results – tells differences based on letters. Any group that shares the same letter are not different from each other
+
+```{r}
+cld(phc1)
+```
+
+Degrasse and South Hammond don't share the same letter
