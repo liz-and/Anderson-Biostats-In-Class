@@ -72,9 +72,8 @@ Conduct a Tukey's HSD (honestly significant differences) test
 
 -   Only run a Tukey's test if you get a significant p-value with the ANOVA on its own
 
-```{=html}
 <!-- -->
-```
+
 -   Compares all the forests with all the other forests
 
 -   Automatically only gives significance once it's adjusted the p values

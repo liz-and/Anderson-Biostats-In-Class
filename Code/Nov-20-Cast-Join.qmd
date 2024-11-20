@@ -1,0 +1,80 @@
+---
+title: "Nov 20 Class - Casting and joining"
+format: html
+editor: visual
+---
+
+# Casting b/w long –\> wide and joining dataframes
+
+Set up
+
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(here)
+
+```
+
+read in data 1
+
+```{r}
+cams <- read.csv(here("Data", "site_locations.csv"))
+```
+
+read in data 2
+
+```{r}
+species <- read.csv(here("Data", "species_per_site.csv"))
+```
+
+## Casting b/w long and wide
+
+Might want to make a column for all the dates - because might want to make a plot with just one date on the x or y axis (can only do with a column)
+
+Use `pivot_wider()` to do this
+
+```{r}
+sp_wide <- species |> pivot_wider(names_from = Date, values_from = Num_species)
+```
+
+End up with NAs because signifies days that camera wasn't out at that site
+
+Can go other direction and cast with `pivot_longer()`
+
+```{r}
+sp_long <- sp_wide |>
+  pivot_longer(cols = c(`1-Jul-24`:`15-Jul-24`), names_to = "Date", values_to = "Num_species")
+```
+
+\` says to R to think of the value as text
+
+the : says to go from here to here
+
+End up with more rows because it incorporated the NAs - which is fine
+
+## Joining Dataframes
+
+How to combine two dataframe that are different lengths:
+
+Want to get the lat and long data from cams and add it to species:
+
+They both share the site variable, so can use that to match
+
+Use `join` function to do it
+
+```{r}
+cams_species <- full_join(species, cams) 
+#First data frame is the one that will be added to - in this case, cams is being added to species
+
+# by = ___ would tell what column you want to match, don't need if only one thing in common
+
+```
+
+The help panel has more options
+
+Keeps all 81 rows of data because it's a full join - need to be thoughtful about which join you use.
+
+```{r}
+site_species <- full_join(cams, species)
+# In this case, species is being added to cams
+```
